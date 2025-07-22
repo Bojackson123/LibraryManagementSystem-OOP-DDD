@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <Folder Include="ApplicationTests\" />
-    <Folder Include="InfrastructureTests\" />
+    <Folder Include="InfrastructureTests\InMemoryUserRepoTests\" />
   </ItemGroup>
 
 </Project>

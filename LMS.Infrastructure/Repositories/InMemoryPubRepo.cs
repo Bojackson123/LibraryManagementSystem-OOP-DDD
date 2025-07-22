@@ -5,11 +5,27 @@ namespace LMS.Infrastructure.Repositories
 {
     public class InMemoryPubRepo : IPublicationRepository
     {
-        private readonly Dictionary<int, Publication> borrowablePublications = new();
+        private readonly Dictionary<int, Publication> allPublications = new();
+
+        public bool TryAddPublication(Publication pubObject)
+        {
+            return allPublications.TryAdd(pubObject.ID, pubObject);
+        }
+
+        public bool TryRemovePublication(int ID)
+        {
+            return allPublications.Remove(ID);
+        }
+
+        public void Save(Publication pubObject)
+        {
+            // Placeholder for when I implement EF.
+            return;
+        }
 
         public bool TryGetById(int ID, out Publication? result)
         {
-            if (borrowablePublications.TryGetValue(ID, out Publication? value))
+            if (allPublications.TryGetValue(ID, out Publication? value))
             {
                 result = value;
                 return true;
@@ -20,7 +36,7 @@ namespace LMS.Infrastructure.Repositories
 
         public bool TryGetByIsbn(string isbn, out Publication? result)
         {
-            foreach (KeyValuePair<int, Publication> entry in borrowablePublications)
+            foreach (KeyValuePair<int, Publication> entry in allPublications)
             {
                 if (entry.Value.Isbn == isbn)
                 {
@@ -35,7 +51,7 @@ namespace LMS.Infrastructure.Repositories
         public List<Publication> GetByTitle(string title)
         {
             List<Publication> pubObjectList = new();
-            foreach (KeyValuePair<int, Publication> entry in borrowablePublications)
+            foreach (KeyValuePair<int, Publication> entry in allPublications)
             {
                 if (entry.Value.Title.ToLower().Contains(title.ToLower()))
                 {
@@ -50,7 +66,7 @@ namespace LMS.Infrastructure.Repositories
             List<Publication> pubObjectList = new();
             string lowerCreator = creator.ToLower();
 
-            foreach (var entry in borrowablePublications)
+            foreach (var entry in allPublications)
             {
                 if (IsMatchingCreator(entry.Value, lowerCreator))
                 {
@@ -64,7 +80,7 @@ namespace LMS.Infrastructure.Repositories
         public List<Publication> GetByTopic(string topic)
         {
             List<Publication> pubObjectList = new();
-            foreach (KeyValuePair<int, Publication> entry in borrowablePublications)
+            foreach (KeyValuePair<int, Publication> entry in allPublications)
             {
                 if (entry.Value.Topic.ToLower().Contains(topic.ToLower()))
                 {
@@ -74,24 +90,16 @@ namespace LMS.Infrastructure.Repositories
             return pubObjectList;
         }
 
-        public bool TryAddPublication(Publication pubObject)
-        {
-            return borrowablePublications.TryAdd(pubObject.ID, pubObject);
-        }
-
-        public bool TryRemovePublication(int ID)
-        {
-            return borrowablePublications.Remove(ID);
-        }
-
-        public void Save(Publication pubObject)
-        {
-            // Placeholder for when I implement EF.
-            return;
-        }
+     
 
 
         // Helper Methods
+
+        public int GetPublicationsCount()
+        {
+            return allPublications.Count;
+        }
+
         private bool IsMatchingCreator(Publication pub, string creatorQuery)
         {
             string normalizedQuery = creatorQuery.ToLower();
