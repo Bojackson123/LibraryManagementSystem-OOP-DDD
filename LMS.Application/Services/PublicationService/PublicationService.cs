@@ -12,6 +12,13 @@ public class PublicationService
     {
         _repo = repo;
     }
+
+    public bool TryAddPublication()
+    {
+        
+    }
+
+    public bool TryRemovePublication()
     
     public bool TryBorrowPub(IBorrowable pubObject)
     {
@@ -37,6 +44,8 @@ public class PublicationService
         
         return result;
     }
+
+    
 
     
 }

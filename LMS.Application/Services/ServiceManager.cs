@@ -12,10 +12,46 @@ public class ServiceManager
     private static InMemoryPubRepo _pubRepo = new();
     private PublicationService pubService = new(_pubRepo);
 
+    #region Add and Remove User Methods.
+    public string AddUser(string firstName, string lastName, string phoneNumber)
+    {
+        if (!userService.TryAddUser(firstName, lastName, phoneNumber))
+        {
+            throw new Exception("Unexpected error: User was not added. Please try again later.");
+        }
+        return $"User: '{firstName} {lastName}' was successfully added!";
+    }
+
+    public string RemoveUser(int userID)
+    {
+        User userObject = ValidateAndGetUser(userID);
+        if (!userService.TryRemoveUser(userObject))
+        {
+            throw new Exception("Unexpected error: User was not removed. Please try again later.");
+        }
+
+        return $"User: '{userObject.FirstName} {userObject.LastName}' was successfully removed!";
+    }
+    #endregion
+
+    
+    #region Add and Remove Publication Methods.
+    
+
+    #endregion 
+    
+    #region Search and Aggregate Methods.
+
+    #endregion
+    
+    #region Borrowing and Return Methods.
+    // --- Borrowing Method ---
     public string BorrowPub(int pubID, int userID)
     {
-        Publication pubObject = _BorrowPub_ValidateAndGetPublication(pubID);
-        User userObject = _BorrowPub_ValidateAndGetUser(userID);
+
+        // Validate user and publication object.
+        Publication pubObject = ValidateAndGetPublication(pubID);
+        User userObject = ValidateAndGetUser(userID);
 
         // Execute borrowing
         // Try borrowing book from publication service via publications internal state.
@@ -24,7 +60,7 @@ public class ServiceManager
             throw new InvalidOperationException($"Publication: '{pubObject.Title}' is not currently in stock!");
         }
 
-        // Try adding book to user object
+        // Try adding book to user object via users internal state.
         if (!userService.TryBorrowPublication(userObject, pubObject))
         {
             // if it fails, "return" the book back to the pubObject
@@ -32,10 +68,48 @@ public class ServiceManager
             throw new InvalidOperationException($"User: '{userObject.FirstName} {userObject.LastName}' already checked out this book!");
         }
 
-        return $"Publication: '{pubObject.Title}' has been successfully added to User: '{userObject.FirstName} {userObject.LastName}'!";
+        return $"User: '{userObject.FirstName} {userObject.LastName}' successfully checked out Publication: '{pubObject.Title}'!";
     }
 
-    private Publication _BorrowPub_ValidateAndGetPublication(int pubID)
+    // --- Returning Method ---
+    public string ReturnPub(int pubID, int userID)
+    {
+        User userObject = ValidateAndGetUser(userID);
+        Publication pubObject = ValidateAndGetPublication(pubID);
+
+        if (!userService.TryReturnPublication(userObject, pubObject))
+        {
+            throw new InvalidOperationException($"User: '{userObject.FirstName} {userObject.LastName}' has not checked out Publication: '{pubObject}'!");
+        }
+
+        if (!pubService.TryReturnPub((IBorrowable)pubObject))
+        {
+            throw new InvalidOperationException($"Publication: {pubObject.Title} is already at max capacity. Removing 'ghost' copy from users inventory.");
+        }
+
+        return $"User: '{userObject.FirstName} {userObject.LastName}' successfully returned Publication: '{pubObject.Title}'!";
+        
+    }
+
+    #endregion
+    
+
+
+    #region ---Helper Methods---
+    
+    private User ValidateAndGetUser(int userID)
+    {
+        User? userObject = userService.GetByID(userID);
+
+        if (userObject == null)
+        {
+            throw new ArgumentException($"UserID: '{userID}' was not found!");
+        }
+
+        return userObject;
+    }
+
+    private Publication ValidateAndGetPublication(int pubID)
     {
         Publication? pubObject = pubService.GetByID(pubID);
 
@@ -51,18 +125,6 @@ public class ServiceManager
 
         return pubObject;
     }
-
-    private User _BorrowPub_ValidateAndGetUser(int userID)
-    {
-        User? userObject = userService.GetByID(userID);
-
-        if (userObject == null)
-        {
-            throw new ArgumentException($"UserID: '{userID}' was not found!");
-        }
-
-        return userObject;
-    }
-
-    public 
+    
+    #endregion
 }
