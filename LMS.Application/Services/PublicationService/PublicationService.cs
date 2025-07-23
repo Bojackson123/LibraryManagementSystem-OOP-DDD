@@ -13,12 +13,15 @@ public class PublicationService
         _repo = repo;
     }
 
-    public bool TryAddPublication()
+    public bool TryAddPublication(Publication publication)
     {
-        
+        return _repo.TryAddPublication(publication);
     }
 
-    public bool TryRemovePublication()
+    public bool TryRemovePublication(int pubID)
+    {
+        return _repo.TryRemovePublication(pubID);
+    }
     
     public bool TryBorrowPub(IBorrowable pubObject)
     {

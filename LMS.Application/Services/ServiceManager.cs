@@ -37,6 +37,75 @@ public class ServiceManager
     
     #region Add and Remove Publication Methods.
     
+    public string AddBook(string title, string description, string author, string topic, string isbn, int count)
+    {
+        Book book = new Book(title, description, author, topic, isbn, count);
+        if (!pubService.TryAddPublication(book))
+        {
+            throw new Exception("Unexpected error: Book was not added. Please try again later.");
+        }
+        return $"Book: '{title}' by {author} was successfully added!";
+    }
+
+    public string AddAudioBookCD(string title, string description, string author, string topic, string isbn, string narrator, int runTime, int count)
+    {
+        AudioBookCD audioBook = new AudioBookCD(title, description, author, topic, isbn, narrator, runTime, count);
+        if (!pubService.TryAddPublication(audioBook))
+        {
+            throw new Exception("Unexpected error: AudioBook CD was not added. Please try again later.");
+        }
+        return $"AudioBook CD: '{title}' by {author} was successfully added!";
+    }
+
+    public string AddEncyclopedia(string[] authors, string title, string description, string topic, string isbn, int edition)
+    {
+        Encyclopedia encyclopedia = new Encyclopedia(authors, title, description, topic, isbn, edition);
+        if (!pubService.TryAddPublication(encyclopedia))
+        {
+            throw new Exception("Unexpected error: Encyclopedia was not added. Please try again later.");
+        }
+        return $"Encyclopedia: '{title}' was successfully added!";
+    }
+
+    public string AddPeriodical(string title, string description, string isbn, string topic, string publisher, int issueNumber, int count)
+    {
+        Periodical periodical = new Periodical(title, description, isbn, topic, publisher, issueNumber, count);
+        if (!pubService.TryAddPublication(periodical))
+        {
+            throw new Exception("Unexpected error: Periodical was not added. Please try again later.");
+        }
+        return $"Periodical: '{title}' was successfully added!";
+    }
+
+    public string AddVideoStreaming(string title, string description, string director, string topic, string isbn, int runTime)
+    {
+        VideoStreaming video = new VideoStreaming(title, description, director, topic, isbn, runTime);
+        if (!pubService.TryAddPublication(video))
+        {
+            throw new Exception("Unexpected error: Video Streaming was not added. Please try again later.");
+        }
+        return $"Video Streaming: '{title}' directed by {director} was successfully added!";
+    }
+
+    public string AddVideoDVD(string title, string description, string director, string topic, string isbn, int runTime, int count)
+    {
+        VideoDVD videoDVD = new VideoDVD(title, description, director, topic, isbn, runTime, count);
+        if (!pubService.TryAddPublication(videoDVD))
+        {
+            throw new Exception("Unexpected error: Video DVD was not added. Please try again later.");
+        }
+        return $"Video DVD: '{title}' directed by {director} was successfully added!";
+    }
+
+    public string RemovePublication(int pubID)
+    {
+        Publication pubObject = ValidateAndGetPublication(pubID);
+        if (!pubService.TryRemovePublication(pubID))
+        {
+            throw new Exception("Unexpected error: Publication was not removed. Please try again later.");
+        }
+        return $"Publication: '{pubObject.Title}' was successfully removed!";
+    }
 
     #endregion 
     
