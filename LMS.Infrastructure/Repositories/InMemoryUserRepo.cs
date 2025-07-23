@@ -54,5 +54,10 @@ namespace LMS.Infrastructure.Repositories
             }
             return result;
         }
+
+        public int GetUserCount()
+        {
+            return allUsers.Count;
+        }
     }   
 }

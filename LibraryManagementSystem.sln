@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Application", "LMS.Appl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Infrastructure", "LMS.Infrastructure\LMS.Infrastructure.csproj", "{D4B2CC20-284B-44B2-8F64-2FC5BAE4B7D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.WebAPI", "LMS.WebAPI\LMS.WebAPI.csproj", "{17D94C77-1EFE-4B4B-8DC5-660F8CCB1CF9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Tests", "LMS.Tests\LMS.Tests.csproj", "{F4C45EC0-2399-4DAE-B808-747F67063FE4}"
 EndProject
 Global

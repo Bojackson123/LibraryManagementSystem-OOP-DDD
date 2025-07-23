@@ -90,9 +90,6 @@ namespace LMS.Infrastructure.Repositories
             return pubObjectList;
         }
 
-     
-
-
         // Helper Methods
 
         public int GetPublicationsCount()

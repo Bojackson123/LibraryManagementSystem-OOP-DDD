@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using LMS.Domain;
+
 using LMS.Domain.Publication;
-using LMS.Infrastructure;
 using LMS.Infrastructure.Repositories;
 
 namespace LMS.Tests.InfrastructureTests.InMemoryPubRepoTests
@@ -67,6 +60,7 @@ namespace LMS.Tests.InfrastructureTests.InMemoryPubRepoTests
             // Act
             bool res1 = repo.TryRemovePublication(b1ID);
             bool res2 = repo.TryRemovePublication(1234);
+            
             // Assert
             Assert.Equal(countBefore - 1, repo.GetPublicationsCount());
             Assert.True(res1);
