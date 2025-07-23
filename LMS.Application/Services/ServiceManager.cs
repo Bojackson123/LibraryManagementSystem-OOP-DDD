@@ -21,7 +21,7 @@ public class ServiceManager
         // Publication checks.
         if (pubObject is null)
         {
-            throw new ArgumentException($"ID: '{pubID}' is was not found!");
+            throw new ArgumentException($"Publication ID: '{pubID}' was not found!");
         }
 
         if (pubObject is not IBorrowable)
@@ -29,10 +29,27 @@ public class ServiceManager
             throw new ArgumentException($"Publication with ID: '{pubID}' cannot be borrowed!");
         }
 
-        // User object
+        // User object.
         
+        User? userObject = userService.GetByID(userID);
 
-        if (pubService.TryBorrowPub())
+        // User checks.
+        if (userObject == null)
+        {
+            throw new ArgumentException($"UserID: {userID} was not found!");
+        }
+
+        // Execute borrowing
+
+        // Try borrowing book from publication service via publications internal state.
+        if (!pubService.TryBorrowPub((IBorrowable)pubObject))
+        {
+            throw new 
+        }
+        if (userService.TryBorrowPublication(userObject, pubObject))
+        {
+            
+        }
 
         
         
